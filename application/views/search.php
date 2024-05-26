@@ -1,7 +1,7 @@
 <?php
 if($this->session->userdata('logged_in')){
     $user = $this->session->userdata('pseudo'); 
-    echo "<h5>Recherche de <u>$user</u> :</h5>";
+    echo "<h5>Recherche hmar de <u>$user</u> :</h5>";
 }
 
  ?>
