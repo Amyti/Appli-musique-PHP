@@ -15,18 +15,21 @@ class Albums extends CI_Controller {
 
 
 	public function index(){
-		$albums = $this->model_music->getAlbums();
+		$order = $this->input->get('order');
+		$genre = $this->input->get('genre');
+
+		$albums = $this->model_music->getAlbums($order, $genre);
         
-		$this->loadViews($albums);
+		if($query = $this->input->get('query')){
+            
+			$data = $this->model_music->searchAlbum($query);
+        	$this->loadViews($data);
+        }else{
+			$this->loadViews($albums);
+		}
 	}
 
-	public function searchAlbum($album){
-		
-		$this->db->like('name',$query);
-		$query = $this->db->get('album');
-
-		return $query->result();
-	}
+	
 
 }
 

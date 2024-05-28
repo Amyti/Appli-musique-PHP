@@ -5,40 +5,140 @@ class Model_music extends CI_Model {
 		$this->load->database();
 	}
 
-	public function getAlbums(){
-		$query = $this->db->query(
-			"SELECT album.name,album.id,year,artist.name as artistName, genre.name as genreName,jpeg 
-			FROM album 
-			JOIN artist ON album.artistid = artist.id
-			JOIN genre ON genre.id = album.genreid
-			JOIN cover ON cover.id = album.coverid
-			ORDER BY year
-			"
-		);
+	public function getAlbums($order, $genre){
+
+		$this->db->select('album.name as albumName,album.id as albumId,year,artist.name as artistName, genre.name as genreName,jpeg');
+		$this->db->from('album');
+		$this->db->join('artist', 'album.artistid = artist.id');
+		$this->db->join('genre', 'genre.id = album.genreid');
+		$this->db->join('cover', 'cover.id = album.coverid');
+
+		if(!empty($genre)){
+			$this->db->where('genre.name', $genre);
+		}
+
+		if ($order == 'asc' || $order == 'desc') {
+			$this->db->order_by('album.name', $order);
+		}
+	
+		$query = $this->db->get();	
+		
 	return $query->result();
 	}
 
-	public function getArtistes(){
-		$query = $this->db->query(
-			"SELECT name, id  
-			FROM artist
-			"
-		);
-	return $query->result();
+	public function getArtistes($order = 'asc', $genre = '') {
+
+		$this->db->select(' artist.name as artistName, artist.id as artistId');
+		$this->db->from('artist');
+		$this->db->join('album', 'album.artistid = artist.id');
+		$this->db->join('genre', 'genre.id = album.genreid');
+		
+
+		if (!empty($genre)) {
+			$this->db->where('genre.name', $genre);
+		}
+
+		$this->db->group_by('artist.id');
+		
+
+		if ($order == 'asc' || $order == 'desc') {
+			$this->db->order_by('artist.name', $order);
+		}
+	
+		$query = $this->db->get();
+		return $query->result();
 	}
 
-	public function searchAlbum($search){
+	
+
+	public function getMusic($order, $genre){
+		
+		$this->db->select('album.name AS albumName, song.name AS songNames, artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year');
+		$this->db->from('song');
+		$this->db->join('track', 'song.id = track.songId');
+		$this->db->join('album', 'track.albumId = album.id');
+		$this->db->join('artist', 'album.artistId = artist.id');
+		$this->db->join('cover', 'album.coverId = cover.id');
+		$this->db->join('genre', 'genre.id = album.genreid');
+		$this->db->limit(100);
+
+		if (!empty($genre)) {
+			$this->db->where('genre.name', $genre);
+		}
+
+		if ($order == 'asc' || $order == 'desc') {
+			$this->db->order_by('song.name', $order);
+		}
+
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	
+
+	public function searchAlbum($search) {
+		$search = $this->db->escape_like_str($search);
 		
 		$query = $this->db->query(
-			"SELECT album.name,album.id,year,artist.name as artistName, genre.name as genreName,jpeg 
-			FROM album 
-			JOIN artist ON album.artistid = artist.id
-			JOIN genre ON genre.id = album.genreid
-			JOIN cover ON cover.id = album.coverid
-			WHERE album.name = '$search'
-			"
+			"SELECT album.name AS albumName, album.id AS albumId, 
+					song.name AS songNames,
+					artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year
+			 FROM song
+			 JOIN track ON song.id = track.songId 
+			 JOIN album ON track.albumId = album.id
+			 JOIN artist ON album.artistId = artist.id
+			 JOIN cover ON album.coverId = cover.id
+			 WHERE song.name LIKE '%$search%' 
+				OR artist.name LIKE '%$search%' 
+				OR album.name LIKE '%$search%'
+			 GROUP BY album.id, album.name, artist.name, cover.jpeg, album.year"
 		);
+	
+		return $query->result();
+	}
 
+	public function searchMusique($search) {
+		$search = $this->db->escape_like_str($search);
+		
+		$query = $this->db->query(
+			"SELECT album.name AS albumName, album.id AS albumId, 
+					song.name AS songNames,
+					artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year
+			 FROM song
+			 JOIN track ON song.id = track.songId 
+			 JOIN album ON track.albumId = album.id
+			 JOIN artist ON album.artistId = artist.id
+			 JOIN cover ON album.coverId = cover.id
+			 WHERE song.name LIKE '%$search%' 
+				OR artist.name LIKE '%$search%' 
+				OR album.name LIKE '%$search%'
+				"
+		);
+	
+		return $query->result();
+	}
+
+	public function searchArtistes($search) {
+		$search = $this->db->escape_like_str($search);
+		
+		$query = $this->db->query(
+			"SELECT album.name AS albumName,
+					song.name AS songNames,
+					artist.id as artistId,
+					artist.name AS artistName, 
+					cover.jpeg AS jpeg, 
+					album.year AS albumYear
+			 FROM song
+			 JOIN track ON song.id = track.songId 
+			 JOIN album ON track.albumId = album.id
+			 JOIN artist ON album.artistId = artist.id
+			 JOIN cover ON album.coverId = cover.id
+			 WHERE song.name LIKE '%$search%' 
+				OR artist.name LIKE '%$search%' 
+				OR album.name LIKE '%$search%'
+			 GROUP BY album.id, album.name, artist.name, cover.jpeg, album.year"
+		);
+	
 		return $query->result();
 	}
 

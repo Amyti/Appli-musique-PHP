@@ -1,16 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Artistes extends CI_Controller {
-
-	public function __construct(){
+class Music extends CI_Controller {
+    
+    
+    public function __construct(){
 		parent::__construct();
 		$this->load->model('model_music');
 	}
 
-    public function loadViews($artistes){
+    public function loadViews($musics){
         $this->load->view('layout/header');
-		$this->load->view('artistes_names',['artistes'=>$artistes]);
+		$this->load->view('music',['musics'=>$musics]);
 		$this->load->view('layout/footer');
     }
 
@@ -18,14 +19,15 @@ class Artistes extends CI_Controller {
 	public function index(){
 		$order = $this->input->get('order');
 		$genre = $this->input->get('genre');
-		$artistes = $this->model_music->getArtistes($order, $genre);
+
+		$musics = $this->model_music->getMusic($order, $genre);
         
 		if($query = $this->input->get('query')){
             
-			$data = $this->model_music->searchArtistes($query);
+			$data = $this->model_music->searchMusique($query);
         	$this->loadViews($data);
         }else{
-			$this->loadViews($artistes);
+			$this->loadViews($musics);
 		}
 	}
 

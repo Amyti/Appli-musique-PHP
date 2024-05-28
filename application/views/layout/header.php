@@ -61,7 +61,7 @@
 
     <li class="search">
 
-    <form action="<?= site_url('search') ?>" method="GET">
+    <form method="GET">
       <input type="text" name="query" placeholder="Rechercher...">
     </form>
   </ul>
@@ -69,6 +69,7 @@
 
   <li><?=anchor('albums','Albums');?></li>
   <li><?=anchor('artistes','Artistes');?></li>
+  <li><?=anchor('music','Musiques');?></li>
   
   <?php if($this->session->userdata('logged_in')){ ?>
   <li><?php echo anchor('playlist','Playlist'); ?></li>
