@@ -1,9 +1,22 @@
         <header>
             <h1>Playlists</h1>
         </header>
-
+<style>
+    h1{
+        text-align: center;
+    }
+    .btnnew{
+        text-decoration: none;
+        color: white;
+        border: 2px solid turquoise;
+        border-radius: 8px;
+        padding: 10px; 
+        display: inline-block;
+    }
+</style>
         <section>
             <div class="grid">
+            <h3>Bibliothèque</h3>
                 <?php if (!empty($playlists)): ?>
                     <?php foreach ($playlists as $playlist): ?>
                         <article>
@@ -16,10 +29,15 @@
                             </footer>
                         </article>
                     <?php endforeach; ?>
-                <?php else: ?>
-                    <p>Aucune playlist trouvée.</p>
                 <?php endif; ?>
+                
             </div>
+            <ul class="btnnew">
+                
+                    <?= anchor("playlist/create", 'Nouvelle Playlist'); ?>
+                
+            </ul>
+            
         </section>
     </main>
 </body>

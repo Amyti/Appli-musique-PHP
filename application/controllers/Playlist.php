@@ -19,7 +19,7 @@ class Playlist extends CI_Controller {
 
 		
 		$this->form_validation->set_rules('name', 'Nom', 'required');
-		$this->form_validation->set_rules('desciption', 'Description', 'required');
+		$this->form_validation->set_rules('description', 'Description', 'required');
 
 		if ($this->form_validation->run() === FALSE){
 			$this->load->view('layout/header');
@@ -28,7 +28,17 @@ class Playlist extends CI_Controller {
 		}else{
 			$nom_playlist = $this->input->post('name');
 			$description = $this->input->post('description');
-		
+			$user_id = $this->session->userdata('user_id');
+
+			$playlist = array(
+				"name" => $nom_playlist,
+				"description" => $description,
+				"user_id" => $user_id,
+				"created_at" => date('Y-m-d H:i:s')
+			);
+
+			$this->model_playlist->addPlaylist($playlist);
+			redirect('playlist');
 		}
 
 	}

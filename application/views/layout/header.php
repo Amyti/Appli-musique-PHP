@@ -2,7 +2,7 @@
 <html lang="en" class="has-navbar-fixed-top">
 	<head>
 		<meta charset="UTF-8" />
-		<title>MUSIC APP</title>
+		<title>SPOUTIFAYE</title>
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
@@ -50,6 +50,13 @@
     .btn-login:hover, .btn-logout:hover {
       opacity: 0.8;
     }
+
+    .logo{
+      color: green;
+      
+      display: inline-block;
+
+    }
    </style>
 	</head>
   
@@ -57,7 +64,7 @@
 		<main class='container'>
 			<nav>
       <ul class="navbar">
-    <li><strong>Music APP</strong></li>
+    <h5 class="logo"><li ><strong>Spotif'aïe</strong></li></h5>
 
     <li class="search">
 
