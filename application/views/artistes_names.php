@@ -4,10 +4,12 @@
 <section class="list">
 <?php
 foreach($artistes as $artistes){
+
 	echo "<div><article>";
 	echo "<header class='short-text'>";
-	echo anchor("artistes/view/{$artistes->artistId}","{$artistes->artistName}");
+	echo anchor("music","{$artistes->artistName}");
 	echo "</header>";
+	echo '<img src="data:image/jpeg;base64,'.base64_encode($artistes->jpeg).'" />';
 	echo "</article></div>";
 }
 ?>

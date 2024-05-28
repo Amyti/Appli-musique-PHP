@@ -3,7 +3,8 @@
 class Model_music extends CI_Model {
 	public function __construct(){
 		$this->load->database();
-	}
+	}	
+
 
 	public function getAlbums($order, $genre){
 
@@ -28,11 +29,11 @@ class Model_music extends CI_Model {
 
 	public function getArtistes($order = 'asc', $genre = '') {
 
-		$this->db->select(' artist.name as artistName, artist.id as artistId');
+		$this->db->select('cover.jpeg as jpeg, album.name as albumName, artist.name as artistName, artist.id as artistId');
 		$this->db->from('artist');
 		$this->db->join('album', 'album.artistid = artist.id');
 		$this->db->join('genre', 'genre.id = album.genreid');
-		
+		$this->db->join('cover', 'album.coverId = cover.id');
 
 		if (!empty($genre)) {
 			$this->db->where('genre.name', $genre);
@@ -120,27 +121,25 @@ class Model_music extends CI_Model {
 
 	public function searchArtistes($search) {
 		$search = $this->db->escape_like_str($search);
-		
-		$query = $this->db->query(
-			"SELECT album.name AS albumName,
-					song.name AS songNames,
-					artist.id as artistId,
-					artist.name AS artistName, 
-					cover.jpeg AS jpeg, 
-					album.year AS albumYear
-			 FROM song
-			 JOIN track ON song.id = track.songId 
-			 JOIN album ON track.albumId = album.id
-			 JOIN artist ON album.artistId = artist.id
-			 JOIN cover ON album.coverId = cover.id
-			 WHERE song.name LIKE '%$search%' 
-				OR artist.name LIKE '%$search%' 
-				OR album.name LIKE '%$search%'
-			 GROUP BY album.id, album.name, artist.name, cover.jpeg, album.year"
-		);
 	
+		$this->db->select('album.name AS albumName, song.name AS songNames, artist.id as artistId, artist.name AS artistName, cover.jpeg AS jpeg, album.year AS albumYear');
+		$this->db->from('song');
+		$this->db->join('track', 'song.id = track.songId');
+		$this->db->join('album', 'track.albumId = album.id');
+		$this->db->join('artist', 'album.artistId = artist.id');
+		$this->db->join('cover', 'album.coverId = cover.id');
+		$this->db->like('song.name', $search);
+		$this->db->or_like('artist.name', $search);
+		$this->db->or_like('album.name', $search);
+		$this->db->group_by(['album.id', 'album.name', 'artist.name', 'cover.jpeg', 'album.year']);
+		
+
+		$this->db->group_by('artist.id');
+
+		$query = $this->db->get();
 		return $query->result();
 	}
+	
 
 
 	public function addAccount($account)
