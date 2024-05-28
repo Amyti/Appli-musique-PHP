@@ -2,9 +2,7 @@
             <h1>Playlists</h1>
         </header>
 <style>
-    h1{
-        text-align: center;
-    }
+    
     .btnnew{
         text-decoration: none;
         color: white;
@@ -15,8 +13,9 @@
     }
 </style>
         <section>
+        <h3>Bibliothèque</h3>
             <div class="grid">
-            <h3>Bibliothèque</h3>
+            
                 <?php if (!empty($playlists)): ?>
                     <?php foreach ($playlists as $playlist): ?>
                         <article>
