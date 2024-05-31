@@ -5,6 +5,28 @@ class Model_music extends CI_Model {
 		$this->load->database();
 	}	
 
+	public function getAlbumDetails($albumId){
+        $this->db->select('album.id as albumId, album.name as albumName, artist.name as artistName, cover.jpeg as jpeg, album.year');
+        $this->db->from('album');
+        $this->db->join('artist', 'album.artistId = artist.id');
+        $this->db->join('cover', 'album.coverId = cover.id');
+        $this->db->where('album.id', $albumId);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function getSongsByAlbum($albumId){
+        $this->db->select('track.id as trackId, song.id as songId, song.name as songName, artist.name as artistName, cover.jpeg as jpeg');
+        $this->db->from('song');
+        $this->db->join('track', 'song.id = track.songId');
+        $this->db->join('album', 'track.albumId = album.id');
+        $this->db->join('artist', 'album.artistId = artist.id');
+        $this->db->join('cover', 'album.coverId = cover.id');
+        $this->db->where('album.id', $albumId);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 
 	public function getAlbums($order, $genre){
 
@@ -13,7 +35,8 @@ class Model_music extends CI_Model {
 		$this->db->join('artist', 'album.artistid = artist.id');
 		$this->db->join('genre', 'genre.id = album.genreid');
 		$this->db->join('cover', 'cover.id = album.coverid');
-
+		$this->db->limit(100);
+		
 		if(!empty($genre)){
 			$this->db->where('genre.name', $genre);
 		}
@@ -26,6 +49,8 @@ class Model_music extends CI_Model {
 		
 	return $query->result();
 	}
+
+	
 
 	public function getArtistes($order = 'asc', $genre = '') {
 
@@ -50,11 +75,28 @@ class Model_music extends CI_Model {
 		return $query->result();
 	}
 
+	public function getMusicById($id){
+		
+		$this->db->select('song.id as songId, track.id as trackId, album.name AS albumName, song.name AS songNames, artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year');
+		$this->db->from('track');
+		$this->db->join('song', 'song.id = track.songId');
+		$this->db->join('album', 'track.albumId = album.id');
+		$this->db->join('artist', 'album.artistId = artist.id');
+		$this->db->join('cover', 'album.coverId = cover.id');
+		$this->db->join('genre', 'genre.id = album.genreid');
+		$this->db->where('track.id', $id);
+		
+
+
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	
 
 	public function getMusic($order, $genre){
 		
-		$this->db->select('album.name AS albumName, song.name AS songNames, artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year');
+		$this->db->select('song.id as songId, track.id as trackId, album.name AS albumName, song.name AS songNames, artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year');
 		$this->db->from('song');
 		$this->db->join('track', 'song.id = track.songId');
 		$this->db->join('album', 'track.albumId = album.id');
@@ -79,43 +121,40 @@ class Model_music extends CI_Model {
 
 	public function searchAlbum($search) {
 		$search = $this->db->escape_like_str($search);
+	
+		$this->db->select('album.name AS albumName, album.id AS albumId, 
+						   song.name AS songNames, artist.name AS artistName, 
+						   cover.jpeg AS jpeg, album.year AS year');
+		$this->db->from('song');
+		$this->db->join('track', 'song.id = track.songId');
+		$this->db->join('album', 'track.albumId = album.id');
+		$this->db->join('artist', 'album.artistId = artist.id');
+		$this->db->join('cover', 'album.coverId = cover.id');
+		$this->db->like('song.name', $search);
+		$this->db->or_like('artist.name', $search);
+		$this->db->or_like('album.name', $search);
+		$this->db->group_by(array('album.id', 'album.name', 'artist.name', 'cover.jpeg', 'album.year'));
 		
-		$query = $this->db->query(
-			"SELECT album.name AS albumName, album.id AS albumId, 
-					song.name AS songNames,
-					artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year
-			 FROM song
-			 JOIN track ON song.id = track.songId 
-			 JOIN album ON track.albumId = album.id
-			 JOIN artist ON album.artistId = artist.id
-			 JOIN cover ON album.coverId = cover.id
-			 WHERE song.name LIKE '%$search%' 
-				OR artist.name LIKE '%$search%' 
-				OR album.name LIKE '%$search%'
-			 GROUP BY album.id, album.name, artist.name, cover.jpeg, album.year"
-		);
+		$query = $this->db->get();
 	
 		return $query->result();
 	}
+	
 
 	public function searchMusique($search) {
 		$search = $this->db->escape_like_str($search);
 		
-		$query = $this->db->query(
-			"SELECT album.name AS albumName, album.id AS albumId, 
-					song.name AS songNames,
-					artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year
-			 FROM song
-			 JOIN track ON song.id = track.songId 
-			 JOIN album ON track.albumId = album.id
-			 JOIN artist ON album.artistId = artist.id
-			 JOIN cover ON album.coverId = cover.id
-			 WHERE song.name LIKE '%$search%' 
-				OR artist.name LIKE '%$search%' 
-				OR album.name LIKE '%$search%'
-				"
-		);
-	
+
+		$this->db->select('song.id as songId, album.name AS albumName, album.id AS albumId, song.name AS songNames, artist.name AS artistName, cover.jpeg AS jpeg, album.year AS year, track.id as trackId');
+		$this->db->from('song');
+		$this->db->join('track', 'song.id = track.songId');
+		$this->db->join('album', 'track.albumId = album.id');
+		$this->db->join('artist', 'album.artistId = artist.id');
+		$this->db->join('cover', 'album.coverId = cover.id');
+		$this->db->like('song.name', $search);
+		$this->db->or_like('artist.name', $search);
+		$this->db->or_like('album.name', $search);
+		$query = $this->db->get();
 		return $query->result();
 	}
 
@@ -128,9 +167,7 @@ class Model_music extends CI_Model {
 		$this->db->join('album', 'track.albumId = album.id');
 		$this->db->join('artist', 'album.artistId = artist.id');
 		$this->db->join('cover', 'album.coverId = cover.id');
-		$this->db->like('song.name', $search);
-		$this->db->or_like('artist.name', $search);
-		$this->db->or_like('album.name', $search);
+		$this->db->like('artist.name', $search);
 		$this->db->group_by(['album.id', 'album.name', 'artist.name', 'cover.jpeg', 'album.year']);
 		
 

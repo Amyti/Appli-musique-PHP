@@ -67,6 +67,7 @@ class User extends CI_Controller {
 			$user = $this->model_music->getAttribute($email);
 
 			if($user && password_verify($password, $user->password_hash)){
+
 				$donneeUser = array(
 					'user_id' => $user->user_id,
 					'nom' => $user->nom,
@@ -74,6 +75,7 @@ class User extends CI_Controller {
 					'pseudo' => $user->pseudo,
 					'logged_in' => TRUE
 				);
+				
 				$this->session->set_userdata($donneeUser);
 				redirect('albums');
 			}else{

@@ -4,7 +4,6 @@
   <!-- Grid -->
   <div class="grid">
 
-	<!-- Markup example 1: input is inside label -->
 	<label for="prenom">
 	Prénom
 	<input type="text" id="prenom" name="prenom" placeholder="Prénom" value="<?=set_value('prenom')?>"required>
@@ -21,7 +20,6 @@
 	</label>
   </div>
   
-  <!-- Markup example 2: input is after label -->
   <label for="email">Adresse mail</label>
   <input type="email" id="email" name="email" placeholder="Email" value="<?=set_value('email')?>" required>
 <div class="grid">
@@ -38,7 +36,6 @@
 echo anchor("user/auth", 'Déjà un compte ?');
 ?>
 <br><br>
-  <!-- Button -->
   <button type="submit">Submit</button>
 
 </form>

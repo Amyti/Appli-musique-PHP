@@ -1,43 +1,27 @@
-        <header>
-            <h1>Playlists</h1>
-        </header>
-<style>
+<header>
+    <h1>Playlists</h1>
+    <h3>Bibliothèque <h5><?= anchor("playlist/create", '<i class="fa fa-plus"></i> Nouvelle Playlist');?></h5></h3>
+    <br>
     
-    .btnnew{
-        text-decoration: none;
-        color: white;
-        border: 2px solid turquoise;
-        border-radius: 8px;
-        padding: 10px; 
-        display: inline-block;
+</header>
+
+<section class="list">
+    <?php
+    foreach($playlists as $playlist) {
+        echo "<div><article>";
+        echo "<header class='playlist-header'>";
+        echo "<div class='short-text'>";
+        echo anchor("playlist/viewPlaylist/$playlist->id", "{$playlist->name}");
+        echo "</div>";
+        echo "<div class='icon-links ml-auto'>";
+        echo anchor("playlist/edit/{$playlist->id}", '<i class="fa fa-edit"></i>');
+        echo anchor("playlist/deletePlaylist/{$playlist->id}", '<i class="fa fa-trash-o"></i>');
+        echo anchor("playlist/duplicatePLaylist/{$playlist->id}", '<i class="fa fa-clone"></i>');
+        echo "</div></header>";
+        echo "<div>{$playlist->description}</div></article></div>";
     }
-</style>
-        <section>
-        <h3>Bibliothèque</h3>
-            <div class="grid">
-            
-                <?php if (!empty($playlists)): ?>
-                    <?php foreach ($playlists as $playlist): ?>
-                        <article>
-                            <header>
-                                <h2><?=htmlspecialchars($playlist->name);?></h2>
-                            </header>
-                            <p><?=htmlspecialchars($playlist->description);?></p>
-                            <footer>
-                                <?=anchor('playlist/view/'.$playlist->id, 'Voir la playlsit');?>
-                            </footer>
-                        </article>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                
-            </div>
-            <ul class="btnnew">
-                
-                    <?= anchor("playlist/create", 'Nouvelle Playlist'); ?>
-                
-            </ul>
-            
-        </section>
-    </main>
-</body>
-</html>
+    
+
+    
+    ?>
+</section>

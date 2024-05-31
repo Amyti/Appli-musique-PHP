@@ -1,15 +1,15 @@
 <h5>Artistes list</h5>
-<?php $this->load->view('layout/getter');?>
 
 <section class="list">
 <?php
 foreach($artistes as $artistes){
 
 	echo "<div><article>";
-	echo "<header class='short-text'>";
-	echo anchor("music","{$artistes->artistName}");
+	echo "<header class='short-text d-flex justify-content-between'>";
+	echo anchor("albums?query={$artistes->artistName}","{$artistes->artistName}");
+	echo anchor("playlist/addArtistSongToPlaylist/{$artistes->artistId}", '<i title="Ajouter toutes les musiques de cet artiste a votre playlist" class="fa fa-plus"></i>');
 	echo "</header>";
-	echo '<img src="data:image/jpeg;base64,'.base64_encode($artistes->jpeg).'" />';
+	
 	echo "</article></div>";
 }
 ?>
