@@ -32,6 +32,8 @@
 
 </div>
 
+
+
 <?php
 echo anchor("user/auth", 'Déjà un compte ?');
 ?>

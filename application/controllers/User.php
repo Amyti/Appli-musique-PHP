@@ -27,6 +27,7 @@ class User extends CI_Controller {
 			$nom = $this->input->post('nom');
 			$prenom = $this->input->post('prenom');
 			$email = $this->input->post('email');
+			
 			$mdp = $this->input->post('password');
 			$pseudo = $this->input->post('pseudo');
 			$hash = password_hash($mdp, PASSWORD_DEFAULT);
@@ -38,6 +39,8 @@ class User extends CI_Controller {
 				"pseudo" => $pseudo,
 				"password_hash" => $hash
 			);
+
+			
 			
 			$this->model_music->addAccount($user);
 			redirect('user/auth');
@@ -75,7 +78,7 @@ class User extends CI_Controller {
 					'pseudo' => $user->pseudo,
 					'logged_in' => TRUE
 				);
-				
+
 				$this->session->set_userdata($donneeUser);
 				redirect('albums');
 			}else{

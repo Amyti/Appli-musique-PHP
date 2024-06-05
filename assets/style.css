@@ -1,7 +1,7 @@
-section.list
+.list
 {
 	display : flex;
-	justify-content : space-between;
+	
 	flex-wrap:wrap;
 }
 
@@ -70,6 +70,10 @@ h1{
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+
+
+
 img {
 	max-width: 100%;
 	height: auto;
@@ -81,20 +85,28 @@ img {
 	margin-top: 20px;
 }
 
+.playlist-item{
+  max-width: 47%;
+}
+
 .playlist-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-evenly;
 }
+
+
+.short-text {
+  flex-grow: 1;
+  margin-right: 10px; 
+}
+
 .icon-links {
   display: flex;
+  flex-direction: row-reverse;
   gap: 25px; 
 }
 
-.icon-links a {
-  margin: 0; 
-  padding: 0; 
-}
+
 
 .btn {
 	display: inline-block;

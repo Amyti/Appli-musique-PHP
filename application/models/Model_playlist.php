@@ -52,7 +52,22 @@ class Model_playlist extends CI_Model {
 	    return $query->result();
     }
 	
-	
+	public function getRandomSongsOfPLaylist($genre, $number){
+		$this->db->select('track.id as trackId');
+		$this->db->from('track');
+		$this->db->join('song', 'track.songId = song.id');
+		$this->db->join('album', 'album.id = track.albumId');
+		$this->db->join('genre', 'album.genreId = genre.id');
+		if(!empty($genre)){
+			$this->db->where('genre.name', $genre);
+		}
+		$this->db->order_by('RAND()');
+		$this->db->limit($number);
+
+
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 	
 

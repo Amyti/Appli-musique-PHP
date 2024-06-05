@@ -1,9 +1,6 @@
-<!-- Ce n'est pas une page faite par nous l'ai juste adapter a nos besoin mais voici la source de ce code et de son createur : https://www.codingnepalweb.com/create-music-player-in-javascript/  -->
-
 <br>
 <br>
 <br>
-
 
 <body class="page_music">
   <div class="container_music">

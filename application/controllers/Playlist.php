@@ -21,7 +21,7 @@ class Playlist extends CI_Controller {
 		
 		
 	}
-	
+
 /*--------------------------------------------- Divers important ---------------------------------------------------------------*/ 
 
 	public function edit($id)
@@ -47,6 +47,50 @@ class Playlist extends CI_Controller {
 			redirect('playlist');
 		}
 	}
+
+
+	public function createRandomPlaylist(){
+		$this->form_validation->set_rules('name', 'Nom', 'required');
+		$this->form_validation->set_rules('description', 'Description', 'required');
+		$playlistId="";
+		$genres = $this->model_playlist->getGenres($playlistId);
+		
+		if ($this->form_validation->run() === FALSE){
+			$this->load->view('layout/header');
+			$this->load->view('createRandomPlaylist', ['genres' => $genres]);
+			$this->load->view('layout/footer');
+		}else{
+			$nom_playlist = $this->input->post('name');
+			$description = $this->input->post('description');
+			$user_id = $this->session->userdata('user_id');
+			$genre = $this->input->post('genre');
+			$number = $this->input->post('number');
+
+			$playlist = array(
+				"name" => $nom_playlist,
+				"description" => $description,
+				"user_id" => $user_id,
+				"created_at" => date('Y-m-d H:i:s')
+			);
+			$playlist_id = $this->model_playlist->addPlaylist($playlist);
+			
+			$playlist_songs = $this->model_playlist->getRandomSongsOfPLaylist($genre, $number);
+			
+
+			foreach($playlist_songs as $playlist_song){
+				$data = array(
+					"playlist_id" => $playlist_id,
+					"trackId" => $playlist_song->trackId,
+				);
+				$this->model_playlist->addToPlaylist($data);
+			}
+
+			redirect('playlist');
+		}
+	}
+
+
+
 
 	public function create(){
 
