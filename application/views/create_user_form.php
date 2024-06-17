@@ -22,7 +22,9 @@
   
   <label for="email">Adresse mail</label>
   <input type="email" id="email" name="email" placeholder="Email" value="<?=set_value('email')?>" required>
+ 
 <div class="grid">
+	
 	<label for="password">Password
 	<input type="password" id="password" name="password" placeholder="Password" value="<?=set_value('password')?>" required>
 </label>
@@ -37,7 +39,15 @@
 <?php
 echo anchor("user/auth", 'Déjà un compte ?');
 ?>
+<br>
+<br>
+
+<?php if ($this->session->flashdata('error')): ?>
+		<div class="alert-danger">
+			<?php echo $this->session->flashdata('error'); ?>
+		</div>
+	<?php endif; ?>
 <br><br>
-  <button type="submit">Submit</button>
+  <button type="submit">S'inscrire</button>
 
 </form>

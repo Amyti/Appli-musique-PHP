@@ -30,6 +30,10 @@ width : 30%;
 	max-width: 100px;
 }
 
+.alert-danger{
+  color: #f01f1f;
+
+}
 
 
 .short-text {

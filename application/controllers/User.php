@@ -39,11 +39,17 @@ class User extends CI_Controller {
 				"pseudo" => $pseudo,
 				"password_hash" => $hash
 			);
-
+			$boolMail = $this->model_music->verifyMail($email);
+			
+			if($boolMail == false){
+				$this->model_music->addAccount($user);
+				redirect('user/auth');
+			}else{
+				$this->session->set_flashdata('error', 'Cet email est déjà utilisé.');
+				redirect('user/create');
+			}
 			
 			
-			$this->model_music->addAccount($user);
-			redirect('user/auth');
 			
 		}
 	}
@@ -82,7 +88,8 @@ class User extends CI_Controller {
 				$this->session->set_userdata($donneeUser);
 				redirect('albums');
 			}else{
-				redirect('user/create');
+				$this->session->set_flashdata('error', 'Email ou Mot de Passe Incorrect je sais pas a toi de voir haha');
+				redirect('user/auth');
 			}
 		}
 	}

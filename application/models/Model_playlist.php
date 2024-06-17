@@ -72,6 +72,7 @@ class Model_playlist extends CI_Model {
 	
 
 	public function getPlaylistAlbumSong($id, $query, $genre = '', $order = 'asc') {
+		$this->db->distinct();
 		$this->db->select('song.id as song_id, song.name as song_name, playlist_songs.playlist_id as id, artist.name as artistName, album.name as albumName, cover.jpeg as jpeg, track.id as trackId');
 		$this->db->from('track');
 		$this->db->join('song', 'track.songId = song.id');
@@ -131,6 +132,7 @@ class Model_playlist extends CI_Model {
 
 
 	public function getSongsOfPLaylist($id){
+		$this->db->distinct();
 		$this->db->select('playlist_id, trackId');
 		$this->db->from('playlist_songs');
 		$this->db->where('playlist_id', $id);

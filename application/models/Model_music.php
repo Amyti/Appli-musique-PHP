@@ -197,5 +197,19 @@ class Model_music extends CI_Model {
 		return false;
 	}
 
+	public function verifyMail($email){
+		$this->db->select('email');
+		$this->db->from('users');
+		$this->db->where('email', $email);
+
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0){
+			return true;
+		}
+		return false;
+
+	}
+
 	
 }

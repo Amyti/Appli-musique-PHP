@@ -21,10 +21,14 @@
     <h5 class="logo"><li ><strong>Spotif'aïe</strong></li></h5>
 
     <li class="search">
-
+  <?php
+    $page = preg_split('/[\/]/', $_SERVER['REQUEST_URI']);
+    if($page[count($page)-1]!="auth" && $page[count($page)-1]!="create"){
+  ?>
     <form method="GET">
       <input type="text" name="query" placeholder="Rechercher...">
     </form>
+    <?php }?>
   </ul>
   <ul>
 

@@ -16,8 +16,14 @@
 echo anchor("user/create", 'Pas de compte ?');
 ?>
 <br><br>
-
+<?php if ($this->session->flashdata('error')): ?>
+		<div class="alert-danger">
+			<?php echo $this->session->flashdata('error'); ?>
+		</div>
+	<?php endif; ?>
+  <br>
+  <br>
   <!-- Button -->
-  <button type="submit">Submit</button>
+  <button type="submit">Se Connecter</button>
 
 </form>
