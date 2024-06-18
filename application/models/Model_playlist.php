@@ -11,7 +11,8 @@ class Model_playlist extends CI_Model {
 	
 		$nom = $this->db->escape($nom);
 		$desc = $this->db->escape($desc);
-		
+		$nom = str_replace('\'', '', $nom);
+		$desc = str_replace('\'', '', $desc);
 	
 		if (!empty($desc)) {
 			$sql = "UPDATE playlists SET name = ?, description = ? WHERE playlist_id = ? AND user_id = ?";
@@ -20,6 +21,21 @@ class Model_playlist extends CI_Model {
 			$sql = "UPDATE playlists SET name = ? WHERE playlist_id = ? AND user_id = ?";
 			$this->db->query($sql, array($nom, $id, $user_id));
 		}
+	}
+
+	public function playlistDeUser($id){
+		$user_id = $this->session->userdata('user_id');
+		$this->db->select('playlist_id');
+		$this->db->from('playlists');
+		$this->db->where('user_id', $user_id);
+		$this->db->where('playlist_id', $id);
+
+		$query = $this->db->get();
+
+		if($query->num_rows() > 0){
+			return true;
+		}
+		return false;
 	}
 	
 	

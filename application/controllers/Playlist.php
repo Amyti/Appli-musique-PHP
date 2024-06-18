@@ -53,7 +53,7 @@ class Playlist extends CI_Controller {
 		$this->form_validation->set_rules('name', 'Nom', 'required');
 		$this->form_validation->set_rules('description', 'Description', 'required');
 		$playlistId="";
-		$genres = $this->model_playlist->getGenres($playlistId);
+		
 		
 		if ($this->form_validation->run() === FALSE){
 			$this->load->view('layout/header');
@@ -214,19 +214,23 @@ class Playlist extends CI_Controller {
 /*--------------------------------------------- Viewer ---------------------------------------------------------------*/ 
 
 	public function viewPlaylist($id) {
-		$order = $this->input->get('order');
-		$genre = $this->input->get('genre');
-        $query = $this->input->get('query');
+		$boolA = $this->model_playlist->playlistDeUser($id);
+		if($boolA){
+			$order = $this->input->get('order');
+			$genre = $this->input->get('genre');
+			$query = $this->input->get('query');
 
-		$albumSongs = $this->model_playlist->getPlaylistAlbumSong($id, $query, $genre, $order);
-        $genres = $this->model_playlist->getGenres($id);
-        
+			$albumSongs = $this->model_playlist->getPlaylistAlbumSong($id, $query, $genre, $order);
+			$genres = $this->model_playlist->getGenres($id);
+			
 
-		$this->load->view('layout/header');
-        $this->load->view('layout/getter', ['genres' => $genres]);
-		$this->load->view('playlist_song', ['playlist_songs' => $albumSongs, 'playlist_id' => $id]); 
-		$this->load->view('layout/footer');
-	
+			$this->load->view('layout/header');
+			$this->load->view('layout/getter', ['genres' => $genres]);
+			$this->load->view('playlist_song', ['playlist_songs' => $albumSongs, 'playlist_id' => $id]); 
+			$this->load->view('layout/footer');
+		}else{
+			redirect('playlist');
+		}
 	}
 
 /*--------------------------------------------- Deleter ---------------------------------------------------------------*/ 
