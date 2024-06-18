@@ -22,10 +22,10 @@
 
 | Date        | Tâche                           | Responsable                     |
 |-------------|---------------------------------|---------------------------------|
-| 01/06/2024  | Recherche initiale              | Amir KABBOURI                   |
-| 08/06/2024  | Analyse des données             | Pierre COURTEHOUX, Amir KABBOURI|
-| 15/06/2024  | Développement du prototype      | Bamba TOP, Amir KABBOURI        |
-| 22/06/2024  | Test et validation              | Amir, Pierre, Bamba             |
+| 10/05/2024  | Recherche initiale              | Amir KABBOURI                   |
+| 15/05/2024  | Analyse des données             | Pierre COURTEHOUX, Amir KABBOURI|
+| 20/05/2024  | Développement du prototype      | Bamba TOP, Amir KABBOURI        |
+| 05/06/2024  | Test et validation              | Amir, Pierre, Bamba             |
 
 ## Réunions
 
