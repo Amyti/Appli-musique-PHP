@@ -160,7 +160,7 @@ class Model_music extends CI_Model {
 
 	public function searchArtistes($search) {
 		$search = $this->db->escape_like_str($search);
-	
+		$this->db->distinct();
 		$this->db->select('album.name AS albumName, song.name AS songNames, artist.id as artistId, artist.name AS artistName, cover.jpeg AS jpeg, album.year AS albumYear');
 		$this->db->from('song');
 		$this->db->join('track', 'song.id = track.songId');
@@ -168,9 +168,6 @@ class Model_music extends CI_Model {
 		$this->db->join('artist', 'album.artistId = artist.id');
 		$this->db->join('cover', 'album.coverId = cover.id');
 		$this->db->like('artist.name', $search);
-		$this->db->group_by(['album.id', 'album.name', 'artist.name', 'cover.jpeg', 'album.year']);
-		
-
 		$this->db->group_by('artist.id');
 
 		$query = $this->db->get();
